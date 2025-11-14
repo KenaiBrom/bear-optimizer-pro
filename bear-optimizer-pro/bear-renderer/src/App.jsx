@@ -1,0 +1,1 @@
+export default function App(){ return <div style={{padding:20}}>Bear Renderer (Vite) - replace with real UI</div>; }

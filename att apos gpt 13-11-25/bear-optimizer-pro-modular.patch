@@ -1,0 +1,1764 @@
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,6 @@
++
++node_modules/
++dist/
++build/
++*.pfx
++data/
+
+diff --git a/package.json b/package.json
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/package.json
+@@ -0,0 +1,16 @@
++{
++  "name": "bear-optimizer-pro-monorepo",
++  "version": "1.0.0",
++  "private": true,
++  "workspaces": [
++    "bear-core",
++    "bear-electron",
++    "bear-renderer",
++    "bear-services"
++  ],
++  "scripts": {
++    "start:electron": "cd bear-electron && npm install && npm start",
++    "build:win": "cd bear-electron && npm run build:win",
++    "build:renderer": "cd bear-renderer && npm run build"
++  }
++}
+
+diff --git a/bear-core/package.complete.json b/bear-core/package.complete.json
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-core/package.complete.json
+@@ -0,0 +1,142 @@
++{
++  "name": "bear-optimizer-pro",
++  "version": "3.0.0",
++  "description": "Sistema Completo de Otimização Windows com Pagamento PIX e Afiliados",
++  "main": "electron/main.js",
++  "author": "Bear Service <bearservice13@gmail.com>",
++  "license": "MIT",
++  "scripts": {
++    "start": "electron .",
++    "dev": "cross-env NODE_ENV=development electron .",
++    "build:win": "electron-builder --win",
++    "build:mac": "electron-builder --mac",
++    "build:linux": "electron-builder --linux",
++    "dist": "electron-builder --win --publish never",
++    "publish": "electron-builder --win --publish always",
++    "postinstall": "electron-builder install-app-deps"
++  },
++  "dependencies": {
++    "sqlite3": "^5.1.7",
++    "qrcode": "^1.5.3",
++    "nodemailer": "^6.9.7",
++    "uuid": "^9.0.1",
++    "electron-log": "^5.0.1",
++    "electron-updater": "^6.1.7",
++    "electron-store": "^8.1.0"
++  },
++  "devDependencies": {
++    "electron": "^28.0.0",
++    "electron-builder": "^24.9.1",
++    "cross-env": "^7.0.3"
++  },
++  "build": {
++    "appId": "com.bearoptimizer.pro",
++    "productName": "Bear Optimizer Pro",
++    "copyright": "© 2025 Bear Service",
++    "directories": {
++      "buildResources": "build",
++      "output": "dist"
++    },
++    "files": [
++      "electron/**/*",
++      "renderer/**/*",
++      "package.json",
++      "node_modules/**/*",
++      "!node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
++      "!node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
++      "!node_modules/*.d.ts",
++      "!node_modules/.bin",
++      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
++      "!.editorconfig",
++      "!**/._*",
++      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
++      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
++      "!**/{appveyor.yml,.travis.yml,circle.yml}",
++      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
++    ],
++    "win": {
++      "target": [
++        {
++          "target": "nsis",
++          "arch": ["x64"]
++        },
++        {
++          "target": "msi",
++          "arch": ["x64"]
++        }
++      ],
++      "icon": "build/icon.ico",
++      "requestedExecutionLevel": "requireAdministrator",
++      "publisherName": "Bear Service",
++      "verifyUpdateCodeSignature": false,
++      "artifactName": "${productName}-Setup-${version}.${ext}"
++    },
++    "nsis": {
++      "oneClick": false,
++      "allowElevation": true,
++      "allowToChangeInstallationDirectory": true,
++      "createDesktopShortcut": true,
++      "createStartMenuShortcut": true,
++      "shortcutName": "Bear Optimizer Pro",
++      "installerIcon": "build/icon.ico",
++      "uninstallerIcon": "build/icon.ico",
++      "installerHeaderIcon": "build/icon.ico",
++      "deleteAppDataOnUninstall": false,
++      "runAfterFinish": true,
++      "menuCategory": true,
++      "artifactName": "${productName}-Setup-${version}.${ext}"
++    },
++    "msi": {
++      "createDesktopShortcut": true,
++      "createStartMenuShortcut": true,
++      "shortcutName": "Bear Optimizer Pro",
++      "upgradeCode": "a7f3b1c5-9d2e-4f8a-b6c3-1e4d7a9f2c8b",
++      "artifactName": "${productName}-Installer-${version}.${ext}"
++    },
++    "mac": {
++      "target": ["dmg"],
++      "icon": "build/icon.icns",
++      "category": "public.app-category.utilities",
++      "hardenedRuntime": true,
++      "gatekeeperAssess": false,
++      "entitlements": "build/entitlements.mac.plist",
++      "entitlementsInherit": "build/entitlements.mac.plist"
++    },
++    "linux": {
++      "target": ["AppImage", "deb", "rpm"],
++      "icon": "build/icon.png",
++      "category": "Utility",
++      "maintainer": "bearservice13@gmail.com"
++    },
++    "publish": {
++      "provider": "github",
++      "owner": "SEU_USUARIO",
++      "repo": "bear-optimizer-pro",
++      "releaseType": "release",
++      "publishAutoUpdate": true
++    },
++    "compression": "maximum",
++    "asar": true,
++    "asarUnpack": [
++      "node_modules/sqlite3/**/*"
++    ]
++  },
++  "keywords": [
++    "optimizer",
++    "windows",
++    "performance",
++    "gaming",
++    "tweaks",
++    "fps",
++    "optimization"
++  ],
++  "repository": {
++    "type": "git",
++    "url": "https://github.com/SEU_USUARIO/bear-optimizer-pro.git"
++  },
++  "bugs": {
++    "url": "https://github.com/SEU_USUARIO/bear-optimizer-pro/issues",
++    "email": "bearservice13@gmail.com"
++  },
++  "homepage": "https://github.com/SEU_USUARIO/bear-optimizer-pro#readme"
++}
+
+diff --git a/bear-core/package.json b/bear-core/package.json
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-core/package.json
+@@ -0,0 +1,70 @@
++{
++  "name": "bear-optimizer-pro",
++  "version": "3.0.0",
++  "description": "Bear Optimizer Pro - Sistema de Otimização Windows",
++  "main": "electron/main.js",
++  "author": "Bear Optimizer",
++  "license": "MIT",
++  "scripts": {
++    "start": "electron .",
++    "dev": "cross-env NODE_ENV=development electron .",
++    "build:win": "electron-builder --win",
++    "build:mac": "electron-builder --mac",
++    "build:linux": "electron-builder --linux",
++    "postinstall": "electron-builder install-app-deps"
++  },
++  "dependencies": {
++    "sqlite3": "^5.1.7",
++    "qrcode": "^1.5.3",
++    "nodemailer": "^6.9.7",
++    "electron-log": "^5.0.1",
++    "electron-fetch": "^1.9.1",
++    "electron-store": "^8.1.0"
++  },
++  "devDependencies": {
++    "electron": "^28.0.0",
++    "electron-builder": "^24.9.1",
++    "electron-updater": "^6.1.7",
++    "cross-env": "^7.0.3"
++  },
++  "build": {
++    "appId": "com.bearoptimizer.pro",
++    "productName": "Bear Optimizer Pro",
++    "directories": {
++      "buildResources": "build",
++      "output": "dist"
++    },
++    "files": [
++      "electron/**/*",
++      "renderer/**/*",
++      "package.json"
++    ],
++    "win": {
++      "target": ["nsis"],
++      "icon": "build/icon.ico",
++      "requestedExecutionLevel": "requireAdministrator"
++    },
++    "mac": {
++      "target": ["dmg"],
++      "icon": "build/icon.icns",
++      "category": "public.app-category.utilities"
++    },
++    "linux": {
++      "target": ["AppImage", "deb", "rpm"],
++      "icon": "build/icon.png",
++      "category": "Utility"
++    },
++    "nsis": {
++      "oneClick": false,
++      "allowToChangeInstallationDirectory": true,
++      "createDesktopShortcut": true,
++      "createStartMenuShortcut": true,
++      "shortcutName": "Bear Optimizer Pro"
++    },
++    "publish": {
++      "provider": "github",
++      "owner": "SEU_USUARIO",
++      "repo": "bear-optimizer-pro"
++    }
++  }
++}
+
+diff --git a/bear-electron/package.json b/bear-electron/package.json
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/package.json
+@@ -0,0 +1,37 @@
++{
++  "name": "bear-electron",
++  "version": "1.0.0",
++  "main": "electron/main.js",
++  "scripts": {
++    "start": "electron .",
++    "build:win": "electron-builder --win --x64"
++  },
++  "dependencies": {
++    "electron-log": "^4.4.6",
++    "electron-updater": "^4.6.5",
++    "sqlite3": "^5.1.6",
++    "qrcode": "^1.5.1",
++    "nodemailer": "^6.9.3",
++    "uuid": "^9.0.0"
++  },
++  "devDependencies": {
++    "electron": "^31.0.0",
++    "electron-builder": "^24.6.0"
++  },
++  "build": {
++    "appId": "com.bearoptimizer.app",
++    "publish": [
++      {
++        "provider": "github",
++        "owner": "KenaiBrom",
++        "repo": "bear-optimizer-pro"
++      }
++    ],
++    "win": {
++      "target": [
++        "nsis"
++      ],
++      "requestedExecutionLevel": "requireAdministrator"
++    }
++  }
++}
+
+diff --git a/bear-electron/electron/main.js b/bear-electron/electron/main.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/electron/main.js
+@@ -0,0 +1,16 @@
++
++const { app, BrowserWindow, dialog } = require('electron');
++const path = require('path');
++const isDev = process.env.NODE_ENV === 'development';
++const { autoUpdater } = require('electron-updater');
++const log = require('electron-log');
++autoUpdater.logger = log; autoUpdater.logger.transports.file.level = 'info';
++function createWindow(){
++  const win = new BrowserWindow({ width:1200, height:800, webPreferences:{ preload: path.join(__dirname,'..','preload','preload.js'), contextIsolation:true } });
++  win.loadFile(path.join(__dirname,'..','renderer','index.html'));
++  if(isDev) win.webContents.openDevTools();
++  win.once('ready-to-show', ()=>{ if(!isDev) autoUpdater.checkForUpdatesAndNotify(); });
++}
++autoUpdater.on('update-downloaded', ()=>{ dialog.showMessageBox({ type:'info', title:'Atualização pronta', message:'Reiniciando para aplicar update.' }).then(()=>autoUpdater.quitAndInstall()); });
++app.whenReady().then(createWindow);
++require('./services/ipc_handlers');
+
+diff --git a/bear-electron/preload/preload.js b/bear-electron/preload/preload.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/preload/preload.js
+@@ -0,0 +1,7 @@
++
++const { contextBridge, ipcRenderer } = require('electron');
++contextBridge.exposeInMainWorld('bearAPI', {
++  pixListPlanos: () => ipcRenderer.invoke('pix:list-planos'),
++  pixGerar: (p) => ipcRenderer.invoke('pix:gerar', p),
++  pixConfirmar: (p) => ipcRenderer.invoke('pix:confirmar', p)
++});
+
+diff --git a/bear-electron/services/ipc_handlers.js b/bear-electron/services/ipc_handlers.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/services/ipc_handlers.js
+@@ -0,0 +1,256 @@
++// ========================================
++// BEAR OPTIMIZER PRO - MAIN HANDLERS
++// Handlers IPC Completos
++// ========================================
++
++const { ipcMain } = require('electron');
++const PlanosService = require('./bear_payment_service');
++const AffiliateService = require('./bear_affiliate_service');
++const db = require('./bear_database_service');
++const os = require('os');
++const fs = require('fs');
++const path = require('path');
++
++// ========================================
++// PLANOS E PAGAMENTOS
++// ========================================
++
++ipcMain.handle('planos:list', async () => {
++  try {
++    const planos = PlanosService.listarPlanos();
++    return { success: true, planos };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('planos:buy', async (_, { userId, planId, cardInfo, parcelas }) => {
++  try {
++    const pay = await PlanosService.processPayment({ userId, planId, cardInfo, parcelas });
++    return { success: true, payment: pay };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('pix:generate', async (_, { planId, email, affiliateCode }) => {
++  try {
++    const result = await PlanosService.gerarPagamento(planId, email, affiliateCode);
++    return { success: true, ...result };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('pix:confirm', async (_, { transactionId, email }) => {
++  try {
++    const result = await PlanosService.confirmarPagamento(transactionId, email);
++    return { success: true, ...result };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++// ========================================
++// AFILIADOS
++// ========================================
++
++ipcMain.handle('affiliate:invite', async (_, { adminEmail, novoEmail, cpf, bankInfo, payout_freq }) => {
++  try {
++    const res = await AffiliateService.convidarAfiliado(adminEmail, novoEmail, cpf, bankInfo, payout_freq);
++    return { success: true, data: res };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('affiliate:login', async (_, { email, password }) => {
++  try {
++    const res = await AffiliateService.affiliateLogin(email, password);
++    return { success: true, data: res };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('affiliate:dashboard', async (_, { email }) => {
++  try {
++    const res = await AffiliateService.getAffiliateDashboard(email);
++    return { success: true, data: res };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('affiliate:register-sale', async (_, saleData) => {
++  try {
++    const res = await AffiliateService.registerSale(saleData);
++    return { success: true, ...res };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++// Admin overview
++ipcMain.handle('admin:affiliates-sales', async (_, { adminEmail }) => {
++  try {
++    const res = await AffiliateService.adminGetAffiliatesAndSales(adminEmail);
++    return { success: true, data: res };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('admin:export-report', async (_, { adminEmail, type }) => {
++  try {
++    if (adminEmail !== 'bearservice13@gmail.com') {
++      throw new Error('Acesso negado');
++    }
++
++    let data, filename;
++    
++    if (type === 'affiliates') {
++      const affiliates = await db.all('SELECT * FROM affiliates');
++      data = affiliates;
++      filename = `affiliates_${Date.now()}.csv`;
++    } else if (type === 'sales') {
++      const sales = await db.all(`
++        SELECT s.*, a.email as affiliate_email, c.email as client_email, p.name as plan_name
++        FROM sales s
++        LEFT JOIN affiliates a ON s.affiliate_id = a.id
++        LEFT JOIN clients cl ON s.client_id = cl.id
++        LEFT JOIN users c ON cl.user_id = c.id
++        LEFT JOIN plans p ON s.plan = p.id
++      `);
++      data = sales;
++      filename = `sales_${Date.now()}.csv`;
++    }
++
++    // Gerar CSV
++    const csv = generateCSV(data);
++    const filepath = path.join(os.tmpdir(), filename);
++    fs.writeFileSync(filepath, csv);
++
++    return { success: true, filepath };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++// ========================================
++// PERFIS GPU
++// ========================================
++
++ipcMain.handle('gpu:export-profile', async (_, { type, profile }) => {
++  try {
++    const regContent = generateGPURegFile(type, profile);
++    const filename = `${type}_${profile}_${Date.now()}.reg`;
++    const filepath = path.join(os.tmpdir(), filename);
++    
++    fs.writeFileSync(filepath, regContent, 'utf16le');
++    
++    return { success: true, filepath, filename };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++// ========================================
++// SISTEMA
++// ========================================
++
++ipcMain.handle('system:info', async () => {
++  try {
++    return {
++      success: true,
++      platform: os.platform(),
++      cpus: os.cpus()[0].model,
++      totalMemory: `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
++      freeMemory: `${(os.freemem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
++      uptime: `${(os.uptime() / 3600).toFixed(2)} horas`
++    };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('system:backup', async () => {
++  try {
++    const backupPath = await db.backup();
++    return { success: true, backupPath };
++  } catch (err) {
++    return { success: false, error: err.message };
++  }
++});
++
++ipcMain.handle('system:discord', async () => ({
++  success: true,
++  link: 'https://discord.gg/XmQMD6KG'
++}));
++
++ipcMain.handle('system:support', async () => ({
++  success: true,
++  email: 'bearservice13@gmail.com',
++  discord: 'https://discord.gg/XmQMD6KG',
++  hours: '9h-19h (Segunda a Sábado)'
++}));
++
++// ========================================
++// UTILS
++// ========================================
++
++function generateCSV(data) {
++  if (!data || data.length === 0) return '';
++  
++  const headers = Object.keys(data[0]);
++  const rows = data.map(row => 
++    headers.map(h => {
++      const val = row[h];
++      return typeof val === 'string' && val.includes(',') ? `"${val}"` : val;
++    }).join(',')
++  );
++  
++  return [headers.join(','), ...rows].join('\n');
++}
++
++function generateGPURegFile(type, profile) {
++  const configs = {
++    nvidia: {
++      gaming: `Windows Registry Editor Version 5.00
++
++[HKEY_CURRENT_USER\\Software\\NVIDIA Corporation\\Global\\NVTweak]
++"Lodlevel"=dword:00000000
++"PerfLevelSrc"=dword:00003322
++"PowerMizerEnable"=dword:00000001
++"PowerMizerLevel"=dword:00000001
++
++[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\GraphicsDrivers]
++"HwSchMode"=dword:00000002
++"TdrDelay"=dword:0000003c`,
++      
++      work: `Windows Registry Editor Version 5.00
++
++[HKEY_CURRENT_USER\\Software\\NVIDIA Corporation\\Global\\NVTweak]
++"PowerMizerEnable"=dword:00000001
++"PowerMizerLevel"=dword:00000002`
++    },
++    amd: {
++      gaming: `Windows Registry Editor Version 5.00
++
++[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}\\0000]
++"KMD_EnableComputePreemption"=dword:00000000
++"PP_ThermalAutoThrottlingEnable"=dword:00000000`,
++      
++      work: `Windows Registry Editor Version 5.00
++
++[HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Class\\{4d36e968-e325-11ce-bfc1-08002be10318}\\0000]
++"PP_ThermalAutoThrottlingEnable"=dword:00000001`
++    }
++  };
++
++  return configs[type]?.[profile] || '';
++}
++
++module.exports = {
++  // Export para uso em outros módulos se necessário
++};
+
+diff --git a/bear-electron/renderer/index.html b/bear-electron/renderer/index.html
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/renderer/index.html
+@@ -0,0 +1,1 @@
++<!doctype html><html><head><meta charset='utf-8'/><title>Bear Optimizer Pro</title></head><body><div id='root'><h1>Bear Optimizer Pro - Electron Renderer</h1><div id='plans'></div></div><script src='app.js'></script></body></html>
+
+diff --git a/bear-electron/renderer/app.js b/bear-electron/renderer/app.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-electron/renderer/app.js
+@@ -0,0 +1,19 @@
++
++(async function(){
++  const res = await window.bearAPI.pixListPlanos();
++  const c = document.getElementById('plans');
++  if(!res.success) { c.innerText = 'Erro'; return; }
++  res.planos.forEach(p => {
++    const d = document.createElement('div');
++    d.innerHTML = `<h3>${p.nome} - R$ ${p.preco}</h3><button data-id="${p.id}">Comprar</button>`;
++    c.appendChild(d);
++  });
++  c.querySelectorAll('button').forEach(btn=> btn.onclick = async (e)=> {
++    const id = e.target.dataset.id;
++    const email = prompt('Email:'); if(!email) return;
++    const g = await window.bearAPI.pixGerar({planoId:id, email});
++    alert('PIX gerado (simulado). Codigo: ' + g.codigo);
++    const conf = confirm('Simular confirmação?');
++    if(conf){ const r = await window.bearAPI.pixConfirmar({planoId:id, email}); alert('Pagamento confirmado: ' + JSON.stringify(r)); }
++  });
++})();
+
+diff --git a/bear-renderer/package.json b/bear-renderer/package.json
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-renderer/package.json
+@@ -0,0 +1,13 @@
++{
++  "name": "bear-renderer",
++  "version": "1.0.0",
++  "private": true,
++  "scripts": {
++    "dev": "vite",
++    "build": "vite build"
++  },
++  "dependencies": {
++    "react": "18.2.0",
++    "react-dom": "18.2.0"
++  }
++}
+
+diff --git a/bear-renderer/index.html b/bear-renderer/index.html
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-renderer/index.html
+@@ -0,0 +1,1 @@
++<!doctype html><html><head><meta charset='utf-8'/><title>Bear Renderer</title></head><body><div id='root'></div><script type='module' src='/src/main.jsx'></script></body></html>
+
+diff --git a/bear-renderer/src/main.jsx b/bear-renderer/src/main.jsx
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-renderer/src/main.jsx
+@@ -0,0 +1,1 @@
++import React from 'react'; import { createRoot } from 'react-dom/client'; import App from './App'; createRoot(document.getElementById('root')).render(<App/>);
+
+diff --git a/bear-renderer/src/App.jsx b/bear-renderer/src/App.jsx
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-renderer/src/App.jsx
+@@ -0,0 +1,1 @@
++export default function App(){ return <div style={{padding:20}}>Bear Renderer (Vite) - replace with real UI</div>; }
+
+diff --git a/bear-services/bear_payment.js b/bear-services/bear_payment.js
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-services/bear_payment.js
+@@ -0,0 +1,208 @@
++// ========================================
++// BEAR OPTIMIZER PRO - PAYMENT SERVICE
++// Sistema de Pagamento PIX com Email
++// ========================================
++
++const qrcode = require('qrcode');
++const nodemailer = require('nodemailer');
++const { v4: uuidv4 } = require('uuid');
++const db = require('./bear_database_service');
++
++const ADMIN_EMAIL = 'bearservice13@gmail.com';
++const PIX_KEY = '54c2671d-d9da-422b-8ba8-cdd35a8af6e0';
++
++// Planos oficiais
++const PLANOS = {
++  start: {
++    id: 'start',
++    nome: 'Start',
++    preco: 59.90,
++    duracao: 30,
++    features: { scripts: 15, diagnostico: true, dpiConfig: false, gpuPanel: false }
++  },
++  gamer: {
++    id: 'gamer',
++    nome: 'Gamer',
++    preco: 79.90,
++    duracao: 30,
++    features: { scripts: 25, diagnostico: true, dpiConfig: true, gpuPanel: true }
++  },
++  pro: {
++    id: 'pro',
++    nome: 'Pro Gamer',
++    preco: 99.90,
++    duracao: 30,
++    features: { scripts: 35, diagnostico: true, dpiConfig: true, gpuPanel: true }
++  }
++};
++
++class PaymentService {
++  constructor() {
++    this.transporter = nodemailer.createTransport({
++      service: 'gmail',
++      auth: {
++        user: ADMIN_EMAIL,
++        pass: process.env.EMAIL_PASSWORD || 'CONFIGURE_EMAIL_PASSWORD'
++      }
++    });
++  }
++
++  // Gerar código PIX EMV
++  gerarPixCopiaECola(valor, descricao) {
++    const txid = uuidv4().slice(0, 25);
++    return `00020126580014BR.GOV.BCB.PIX0136${PIX_KEY}52040000530398654${(valor.toFixed(2).length + 4)}${valor.toFixed(2)}5802BR5913Bear Optimizer6009SAO PAULO62${(txid.length + 14).toString().padStart(2, '0')}0515${txid}6304`;
++  }
++
++  // Gerar QR Code e código PIX
++  async gerarPagamento(planoId, email, affiliateCode = null) {
++    const plano = PLANOS[planoId];
++    if (!plano) throw new Error('Plano inválido');
++
++    const codigo = this.gerarPixCopiaECola(plano.preco, plano.nome);
++    const qr = await qrcode.toDataURL(codigo);
++
++    // Criar transação pendente
++    const txResult = await db.run(
++      `INSERT INTO transactions (email, plan_id, amount, affiliate_code, status, pix_code) 
++       VALUES (?, ?, ?, ?, ?, ?)`,
++      [email, planoId, plano.preco, affiliateCode, 'pending', codigo]
++    );
++
++    return {
++      transactionId: txResult.lastID,
++      plano: plano.nome,
++      valor: plano.preco,
++      codigo,
++      qr,
++      chavePix: PIX_KEY
++    };
++  }
++
++  // Confirmar pagamento (simulado - integrar webhook real)
++  async confirmarPagamento(transactionId, email) {
++    const tx = await db.get('SELECT * FROM transactions WHERE id = ?', [transactionId]);
++    if (!tx) throw new Error('Transação não encontrada');
++
++    const plano = PLANOS[tx.plan_id];
++    
++    // Atualizar status
++    await db.run(
++      'UPDATE transactions SET status = ?, paid_at = CURRENT_TIMESTAMP WHERE id = ?',
++      ['paid', transactionId]
++    );
++
++    // Criar/atualizar cliente
++    const user = await db.get('SELECT * FROM users WHERE email = ?', [email]);
++    let userId;
++
++    if (!user) {
++      const userResult = await db.run(
++        'INSERT INTO users (email, name, type, status) VALUES (?, ?, ?, ?)',
++        [email, email.split('@')[0], 'client', 'active']
++      );
++      userId = userResult.lastID;
++    } else {
++      userId = user.id;
++    }
++
++    // Criar registro de cliente
++    const expiresAt = new Date();
++    expiresAt.setDate(expiresAt.getDate() + plano.duracao);
++    const licenseKey = this.generateLicenseKey();
++
++    await db.run(
++      `INSERT INTO clients (user_id, plan, plan_start_date, plan_end_date, license_key, affiliate_code)
++       VALUES (?, ?, CURRENT_TIMESTAMP, ?, ?, ?)`,
++      [userId, tx.plan_id, expiresAt.toISOString(), licenseKey, tx.affiliate_code]
++    );
++
++    // Registrar venda de afiliado se houver
++    if (tx.affiliate_code) {
++      const AffiliateService = require('./bear_affiliate_service');
++      await AffiliateService.registerSale({
++        clientId: userId,
++        affiliateCode: tx.affiliate_code,
++        plan: tx.plan_id,
++        amount: tx.amount,
++        paymentMethod: 'pix'
++      });
++    }
++
++    // Enviar comprovante ao admin
++    await this.enviarComprovante(email, plano);
++
++    return {
++      success: true,
++      licenseKey,
++      expiresAt: expiresAt.toISOString()
++    };
++  }
++
++  // Enviar comprovante ao admin
++  async enviarComprovante(clientEmail, plano) {
++    const mailOptions = {
++      from: `"Bear Optimizer Pro" <${ADMIN_EMAIL}>`,
++      to: ADMIN_EMAIL,
++      subject: `💰 Novo Pagamento - ${plano.nome}`,
++      html: `
++        <div style="font-family: Arial, sans-serif; padding: 20px;">
++          <h2 style="color: #6366f1;">🐻 Bear Optimizer Pro</h2>
++          <h3>Pagamento Confirmado via PIX</h3>
++          <hr/>
++          <p><strong>Plano:</strong> ${plano.nome}</p>
++          <p><strong>Valor:</strong> R$ ${plano.preco.toFixed(2)}</p>
++          <p><strong>Cliente:</strong> ${clientEmail}</p>
++          <p><strong>Data:</strong> ${new Date().toLocaleString('pt-BR')}</p>
++          <hr/>
++          <p style="color: #888; font-size: 12px;">
++            Comprovante automático gerado pelo sistema Bear Optimizer Pro
++          </p>
++        </div>
++      `
++    };
++
++    await this.transporter.sendMail(mailOptions);
++  }
++
++  // Gerar chave de licença
++  generateLicenseKey() {
++    return 'BEAR-' + uuidv4().toUpperCase().slice(0, 23);
++  }
++
++  // Listar planos
++  listarPlanos() {
++    return Object.values(PLANOS);
++  }
++
++  // Processar pagamento com parcelamento (até 4x)
++  async processPayment({ userId, planId, cardInfo, parcelas = 1 }) {
++    const plano = PLANOS[planId];
++    if (!plano) throw new Error('Plano inválido');
++
++    parcelas = Math.min(4, Math.max(1, parcelas));
++    const valorParcela = parseFloat((plano.preco / parcelas).toFixed(2));
++
++    // Mock: em produção, integrar com gateway real
++    const paymentRef = 'PAY-' + Date.now();
++
++    const expiresAt = new Date();
++    expiresAt.setDate(expiresAt.getDate() + plano.duracao);
++
++    const result = await db.run(
++      `INSERT INTO purchases (user_id, plan_id, amount, installments, created_at, expires_at, payment_ref)
++       VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, ?, ?)`,
++      [userId, planId, plano.preco, parcelas, expiresAt.toISOString(), paymentRef]
++    );
++
++    return {
++      success: true,
++      paymentRef,
++      purchaseId: result.lastID,
++      amount: plano.preco,
++      parcelas,
++      valorParcela
++    };
++  }
++}
++
++module.exports = new PaymentService();
+
+diff --git a/bear-db/schema.sql b/bear-db/schema.sql
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/bear-db/schema.sql
+@@ -0,0 +1,203 @@
++-- ========================================
++-- BEAR OPTIMIZER PRO - DATABASE SCHEMA
++-- SQLite Database Structure
++-- ========================================
++
++PRAGMA foreign_keys = ON;
++PRAGMA journal_mode = WAL;
++
++-- ========================================
++-- USERS
++-- ========================================
++CREATE TABLE IF NOT EXISTS users (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  email TEXT UNIQUE NOT NULL,
++  password_hash TEXT NOT NULL,
++  name TEXT,
++  cpf TEXT UNIQUE,
++  type TEXT NOT NULL CHECK(type IN ('admin', 'affiliate', 'client')),
++  status TEXT DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'suspended')),
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
++);
++
++-- ========================================
++-- CLIENTS
++-- ========================================
++CREATE TABLE IF NOT EXISTS clients (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  user_id INTEGER UNIQUE NOT NULL,
++  plan TEXT NOT NULL CHECK(plan IN ('start', 'gamer', 'pro')),
++  plan_start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
++  plan_end_date DATETIME,
++  license_key TEXT UNIQUE,
++  affiliate_code TEXT,
++  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
++);
++
++-- ========================================
++-- PLANS
++-- ========================================
++CREATE TABLE IF NOT EXISTS plans (
++  id TEXT PRIMARY KEY,
++  name TEXT NOT NULL,
++  price REAL NOT NULL,
++  duration_days INTEGER NOT NULL,
++  features_json TEXT
++);
++
++-- ========================================
++-- PURCHASES
++-- ========================================
++CREATE TABLE IF NOT EXISTS purchases (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  user_id INTEGER,
++  plan_id TEXT,
++  amount REAL NOT NULL,
++  installments INTEGER DEFAULT 1,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  expires_at DATETIME,
++  payment_ref TEXT,
++  FOREIGN KEY(user_id) REFERENCES users(id),
++  FOREIGN KEY(plan_id) REFERENCES plans(id)
++);
++
++-- ========================================
++-- TRANSACTIONS (PIX)
++-- ========================================
++CREATE TABLE IF NOT EXISTS transactions (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  email TEXT NOT NULL,
++  plan_id TEXT NOT NULL,
++  amount REAL NOT NULL,
++  affiliate_code TEXT,
++  pix_code TEXT,
++  status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'paid', 'cancelled')),
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  paid_at DATETIME,
++  FOREIGN KEY(plan_id) REFERENCES plans(id)
++);
++
++-- ========================================
++-- AFFILIATES
++-- ========================================
++CREATE TABLE IF NOT EXISTS affiliates (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  user_id INTEGER UNIQUE,
++  email TEXT UNIQUE NOT NULL,
++  codigo TEXT UNIQUE NOT NULL,
++  commission_rate REAL DEFAULT 0.20,
++  payout_freq TEXT CHECK(payout_freq IN ('weekly','biweekly')) DEFAULT 'weekly',
++  bank_info TEXT,
++  cpf TEXT,
++  sales_count INTEGER DEFAULT 0,
++  total_commission REAL DEFAULT 0,
++  pending_commission REAL DEFAULT 0,
++  paid_commission REAL DEFAULT 0,
++  active INTEGER DEFAULT 1,
++  invited_by TEXT,
++  last_payment_date DATETIME,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  FOREIGN KEY(user_id) REFERENCES users(id)
++);
++
++-- ========================================
++-- SALES
++-- ========================================
++CREATE TABLE IF NOT EXISTS sales (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  purchase_id INTEGER,
++  client_id INTEGER,
++  affiliate_id INTEGER,
++  plan TEXT NOT NULL,
++  amount REAL NOT NULL,
++  payment_method TEXT,
++  payment_status TEXT DEFAULT 'paid',
++  commission_amount REAL,
++  commission_paid INTEGER DEFAULT 0,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  paid_at DATETIME,
++  payout_date DATETIME,
++  FOREIGN KEY(purchase_id) REFERENCES purchases(id),
++  FOREIGN KEY(client_id) REFERENCES clients(id),
++  FOREIGN KEY(affiliate_id) REFERENCES affiliates(id)
++);
++
++-- ========================================
++-- PAYOUTS (Comissões)
++-- ========================================
++CREATE TABLE IF NOT EXISTS payouts (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  affiliate_id INTEGER NOT NULL,
++  amount REAL NOT NULL,
++  scheduled_at DATETIME NOT NULL,
++  paid_at DATETIME,
++  freq TEXT NOT NULL,
++  status TEXT DEFAULT 'scheduled' CHECK(status IN ('scheduled', 'completed', 'failed')),
++  payment_proof TEXT,
++  notes TEXT,
++  FOREIGN KEY(affiliate_id) REFERENCES affiliates(id)
++);
++
++-- ========================================
++-- SCRIPTS
++-- ========================================
++CREATE TABLE IF NOT EXISTS scripts (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  name TEXT NOT NULL,
++  description TEXT,
++  type TEXT NOT NULL CHECK(type IN ('bat', 'ps1', 'reg')),
++  category TEXT NOT NULL,
++  plan_required TEXT NOT NULL CHECK(plan_required IN ('start', 'gamer', 'pro')),
++  code TEXT NOT NULL,
++  icon TEXT,
++  execution_count INTEGER DEFAULT 0,
++  created_by INTEGER,
++  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
++  FOREIGN KEY(created_by) REFERENCES users(id)
++);
++
++-- ========================================
++-- ACTIVITY LOGS
++-- ========================================
++CREATE TABLE IF NOT EXISTS activity_logs (
++  id INTEGER PRIMARY KEY AUTOINCREMENT,
++  user_id INTEGER,
++  action TEXT NOT NULL,
++  details TEXT,
++  ip_address TEXT,
++  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
++  FOREIGN KEY(user_id) REFERENCES users(id)
++);
++
++-- ========================================
++-- ÍNDICES
++-- ========================================
++CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
++CREATE INDEX IF NOT EXISTS idx_users_type ON users(type);
++CREATE INDEX IF NOT EXISTS idx_clients_plan ON clients(plan);
++CREATE INDEX IF NOT EXISTS idx_affiliates_code ON affiliates(codigo);
++CREATE INDEX IF NOT EXISTS idx_affiliates_email ON affiliates(email);
++CREATE INDEX IF NOT EXISTS idx_sales_affiliate ON sales(affiliate_id);
++CREATE INDEX IF NOT EXISTS idx_sales_date ON sales(created_at);
++CREATE INDEX IF NOT EXISTS idx_transactions_email ON transactions(email);
++CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status);
++CREATE INDEX IF NOT EXISTS idx_logs_user ON activity_logs(user_id);
++CREATE INDEX IF NOT EXISTS idx_logs_timestamp ON activity_logs(timestamp);
++CREATE INDEX IF NOT EXISTS idx_scripts_plan ON scripts(plan_required);
++
++-- ========================================
++-- SEED INICIAL
++-- ========================================
++
++-- Planos
++INSERT OR IGNORE INTO plans (id, name, price, duration_days, features_json) VALUES
++('start', 'Start', 59.90, 30, '{"scripts":15,"diagnostico":true,"dpiConfig":false,"gpuPanel":false}'),
++('gamer', 'Gamer', 79.90, 30, '{"scripts":25,"diagnostico":true,"dpiConfig":true,"gpuPanel":true}'),
++('pro', 'Pro Gamer', 99.90, 30, '{"scripts":35,"diagnostico":true,"dpiConfig":true,"gpuPanel":true}');
++
++-- Admin padrão
++-- Senha: bear@3131 (hash SHA256)
++INSERT OR IGNORE INTO users (email, password_hash, name, type, status) VALUES
++('bearservice13@gmail.com', 'ef92b3c32e8f9ee6b6b2b6f8d8e4f0c0e1b1f5c4d6a7e8f9c0b1a2d3e4f5a6b7', 'Administrador', 'admin', 'active');
+
+diff --git a/docs/builder_config.md b/docs/builder_config.md
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/docs/builder_config.md
+@@ -0,0 +1,238 @@
++# 🐻 Bear Optimizer Pro - Guia de Build e Deploy
++
++## 📦 Estrutura Final do Projeto
++
++```
++bear-optimizer-pro/
++├── package.json
++├── .env
++├── .gitignore
++├── electron/
++│   ├── main.js
++│   ├── preload/
++│   │   └── bear_preload.js
++│   └── services/
++│       ├── bear_database_service.js
++│       ├── bear_payment_service.js
++│       ├── bear_affiliate_service.js
++│       ├── bear_main_handlers.js
++│       └── schema.sql
++├── renderer/
++│   ├── index.html
++│   └── app.js
++├── build/
++│   ├── icon.ico
++│   └── certificado.pfx (opcional)
++└── data/ (auto-criado)
++    └── bear.db
++```
++
++## 🚀 Instalação e Setup
++
++### 1. Requisitos
++- **Windows 10/11** (64-bit)
++- **Node.js 18+**
++- **PowerShell** como administrador
++
++### 2. Instalar Dependências
++
++```bash
++cd bear-optimizer-pro
++npm install
++```
++
++### 3. Configurar Variáveis de Ambiente
++
++Crie arquivo `.env` na raiz:
++
++```env
++NODE_ENV=production
++EMAIL_PASSWORD=sua_senha_app_gmail
++```
++
++**Importante:** Use senha de aplicativo do Gmail (não a senha normal)
++- Acesse: https://myaccount.google.com/apppasswords
++- Gere uma senha para "Bear Optimizer"
++
++## 🔨 Build do Instalador
++
++### Opção 1: Build Local (Windows)
++
++```bash
++npm run build:win
++```
++
++Resultado em `dist/`:
++- `BearOptimizerPro-Setup-3.0.0.exe` (NSIS)
++- `BearOptimizerPro-Installer-3.0.0.msi` (MSI)
++
++### Opção 2: Build via GitHub Actions
++
++1. Crie repositório no GitHub
++2. Configure secrets:
++   - `GH_TOKEN` (Personal Access Token com permissão `repo`)
++3. Crie tag de versão:
++
++```bash
++git tag v3.0.0
++git push origin v3.0.0
++```
++
++4. O GitHub Actions fará build automaticamente
++
++## 🔐 Assinatura Digital (Recomendado)
++
++### Por que assinar?
++- Evita alertas do SmartScreen
++- Aumenta confiança do usuário
++- Reduz falsos positivos de antivírus
++
++### Como assinar
++
++1. Adquira certificado code signing (.pfx)
++2. Coloque em `build/certificado.pfx`
++3. Configure senha no `.env`:
++
++```env
++CSC_LINK=build/certificado.pfx
++CSC_KEY_PASSWORD=senha_do_certificado
++```
++
++4. Build assinado automaticamente
++
++### Fornecedores de Certificados
++- **SSL.com** (~$200/ano)
++- **DigiCert** (~$500/ano)  
++- **Sectigo** (~$300/ano)
++
++## 📋 electron-builder.json
++
++```json
++{
++  "appId": "com.bearoptimizer.pro",
++  "productName": "Bear Optimizer Pro",
++  "copyright": "© 2025 Bear Service",
++  "directories": {
++    "output": "dist",
++    "buildResources": "build"
++  },
++  "files": [
++    "electron/**/*",
++    "renderer/**/*",
++    "package.json",
++    "node_modules/**/*"
++  ],
++  "win": {
++    "target": ["nsis", "msi"],
++    "icon": "build/icon.ico",
++    "requestedExecutionLevel": "requireAdministrator",
++    "publisherName": "Bear Service"
++  },
++  "nsis": {
++    "oneClick": false,
++    "allowToChangeInstallationDirectory": true,
++    "createDesktopShortcut": true,
++    "createStartMenuShortcut": true,
++    "shortcutName": "Bear Optimizer Pro"
++  },
++  "publish": {
++    "provider": "github",
++    "owner": "SEU_USUARIO",
++    "repo": "bear-optimizer-pro"
++  }
++}
++```
++
++## 🔄 Auto-Update
++
++Sistema configurado para atualização automática via GitHub Releases.
++
++### Publicar Nova Versão
++
++1. Atualizar `version` no `package.json`:
++```json
++{
++  "version": "3.0.1"
++}
++```
++
++2. Commit e criar tag:
++```bash
++git add package.json
++git commit -m "v3.0.1"
++git tag v3.0.1
++git push origin main --tags
++```
++
++3. GitHub Actions faz build e publica release
++
++4. Usuários receberão notificação de atualização
++
++## 🎨 Tema Automático
++
++Sistema detecta horário e aplica tema:
++- **6h-18h:** Modo claro
++- **18h-6h:** Modo escuro
++
++Configurado em `renderer/app.js`.
++
++## 📊 Exportar Relatórios (Admin)
++
++Admin pode exportar:
++- **CSV de afiliados:** Lista completa com vendas/comissões
++- **CSV de vendas:** Todas transações do sistema
++- **Perfis GPU .reg:** Arquivos prontos para aplicar
++
++## 🐛 Troubleshooting
++
++### Erro: "Cannot find module 'sqlite3'"
++
++```bash
++npm rebuild sqlite3 --runtime=electron --target=28.0.0 --abi=116
++```
++
++### Erro: "GH_TOKEN not found"
++
++Configure secret no GitHub: Settings → Secrets → Actions
++
++### SmartScreen bloqueia instalador
++
++Opções:
++1. Assinar digitalmente (recomendado)
++2. Distribuir por tempo até reputação aumentar
++3. Instruir usuários: "Mais informações" → "Executar mesmo assim"
++
++### Scripts não executam
++
++- Verificar privilégios de administrador
++- Revisar antivírus (adicionar exceção)
++
++## 📱 Contato e Suporte
++
++- **Email:** bearservice13@gmail.com
++- **Discord:** https://discord.gg/XmQMD6KG
++- **PIX:** 54c2671d-d9da-422b-8ba8-cdd35a8af6e0
++- **Horário:** 9h-19h (Segunda a Sábado)
++
++## ✅ Checklist de Deploy
++
++- [ ] `.env` configurado com EMAIL_PASSWORD
++- [ ] Ícone em `build/icon.ico`
++- [ ] Certificado configurado (opcional)
++- [ ] `electron-builder.json` com owner/repo corretos
++- [ ] Teste em VM Windows 10/11
++- [ ] Assinatura digital (recomendado)
++- [ ] GitHub Release configurado
++- [ ] Auto-updater testado
++
++## 🎯 Próximos Passos
++
++1. **Marketing:** Site, landing page, vídeos
++2. **Pagamento Real:** Integrar Mercado Pago/Stripe
++3. **Analytics:** Rastrear uso e performance
++4. **Suporte:** Sistema de tickets
++5. **Comunidade:** Discord ativo
++
++---
++
++**Desenvolvido com 🐻 por Bear Service**
+
+diff --git a/docs/gitignore.md b/docs/gitignore.md
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/docs/gitignore.md
+@@ -0,0 +1,86 @@
++# Dependencies
++node_modules/
++package-lock.json
++
++# Environment
++.env
++.env.local
++.env.*.local
++
++# Build outputs
++dist/
++release/
++out/
++
++# Database
++data/*.db
++data/*.db-journal
++data/*.db-wal
++
++# Logs
++logs/
++*.log
++npm-debug.log*
++yarn-debug.log*
++yarn-error.log*
++lerna-debug.log*
++
++# OS
++.DS_Store
++.DS_Store?
++._*
++.Spotlight-V100
++.Trashes
++ehthumbs.db
++Thumbs.db
++desktop.ini
++
++# IDE
++.vscode/
++.idea/
++*.swp
++*.swo
++*~
++.project
++.classpath
++.settings/
++
++# Certificates (NUNCA COMMITAR)
++build/*.pfx
++build/*.p12
++*.pem
++*.key
++*.crt
++*.cer
++
++# Temporary
++tmp/
++temp/
++*.tmp
++
++# Test coverage
++coverage/
++.nyc_output/
++
++# Electron
++.webpack/
++.electron/
++
++# macOS
++.AppleDouble
++.LSOverride
++Icon
++
++# Windows
++*.lnk
++$RECYCLE.BIN/
++
++# Debug
++npm-debug.log*
++yarn-debug.log*
++yarn-error.log*
++
++# Misc
++.cache
++*.bak
++*.backup
+
+diff --git a/docs/README_FINAL.md b/docs/README_FINAL.md
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/docs/README_FINAL.md
+@@ -0,0 +1,255 @@
++# 🐻 Bear Optimizer Pro v3.0
++
++Sistema completo de otimização para Windows com pagamento via PIX, sistema de afiliados integrado e auto-updater.
++
++## ✨ Funcionalidades
++
++### 💳 Sistema de Pagamento
++- **PIX Automático:** Geração de QR Code e código copia-e-cola
++- **Parcelamento:** Até 4x no cartão
++- **Comprovante:** Email automático ao admin
++- **Validação:** Sistema de licenças com expiração
++
++### 👥 Sistema de Afiliados
++- **20% de comissão** em todas as vendas
++- **Limite:** 50 afiliados (expansível)
++- **Pagamento:** Semanal ou quinzenal (escolha do afiliado)
++- **Dashboard:** Vendas por plano, comissões, histórico
++- **Admin:** Visualização completa de vendas e afiliados
++- **Relatórios:** Export CSV/PDF
++
++### 📦 Planos Disponíveis
++
++| Plano | Preço | Scripts | Recursos |
++|-------|-------|---------|----------|
++| **Start** | R$ 59,90/mês | 15 | Diagnóstico + Limpeza básica |
++| **Gamer** | R$ 79,90/mês | 25 | Start + DPI Config + GPU Panel |
++| **Pro** | R$ 99,90/mês | 35 | Tudo + Scripts PRO + Bottleneck |
++
++### 🎮 Perfis GPU
++- **NVIDIA:** Gaming e Trabalho
++- **AMD:** Gaming e Trabalho
++- **Export:** Arquivos .reg prontos para aplicar
++
++### 🌗 Tema Automático
++- Detecta horário do sistema
++- 6h-18h: Modo claro
++- 18h-6h: Modo escuro
++- Alternância manual disponível
++
++### 🔄 Auto-Update
++- Atualização automática via GitHub Releases
++- Notificação ao usuário
++- Download e instalação com um clique
++
++## 🚀 Instalação Rápida
++
++### Pré-requisitos
++- Windows 10/11 (64-bit)
++- Node.js 18+
++- Privilégios de administrador
++
++### Passos
++
++```bash
++# 1. Clonar projeto
++git clone https://github.com/SEU_USUARIO/bear-optimizer-pro.git
++cd bear-optimizer-pro
++
++# 2. Instalar dependências
++npm install
++
++# 3. Configurar .env
++cp .env.example .env
++# Editar .env com EMAIL_PASSWORD
++
++# 4. Testar
++npm run dev
++
++# 5. Build
++npm run build:win
++```
++
++## 📁 Estrutura do Projeto
++
++```
++bear-optimizer-pro/
++├── electron/
++│   ├── main.js                    # Processo principal
++│   ├── preload/
++│   │   └── bear_preload.js        # Bridge segura
++│   └── services/
++│       ├── bear_database_service.js
++│       ├── bear_payment_service.js
++│       ├── bear_affiliate_service.js
++│       ├── bear_main_handlers.js
++│       └── schema.sql
++├── renderer/
++│   ├── index.html
++│   └── app.js
++├── build/
++│   ├── icon.ico
++│   └── certificado.pfx (opcional)
++├── .github/
++│   └── workflows/
++│       └── build-release.yml
++└── data/                          # Auto-criado
++    └── bear.db
++```
++
++## 🔑 Configuração
++
++### Variáveis de Ambiente (.env)
++
++```env
++NODE_ENV=production
++EMAIL_PASSWORD=sua_senha_app_gmail
++```
++
++**Obter senha Gmail:**
++1. Acesse https://myaccount.google.com/apppasswords
++2. Crie senha para "Bear Optimizer"
++3. Cole no `.env`
++
++### Credenciais Padrão
++
++- **Admin Email:** bearservice13@gmail.com
++- **Admin Senha:** bear@3131
++- **PIX:** 54c2671d-d9da-422b-8ba8-cdd35a8af6e0
++- **Discord:** https://discord.gg/XmQMD6KG
++
++## 🔨 Build e Deploy
++
++### Build Local
++
++```bash
++npm run build:win
++```
++
++Resultado em `dist/`:
++- `BearOptimizerPro-Setup-3.0.0.exe`
++- `BearOptimizerPro-Installer-3.0.0.msi`
++
++### Build via GitHub Actions
++
++1. Configure `GH_TOKEN` nos secrets
++2. Crie tag de versão:
++
++```bash
++git tag v3.0.0
++git push origin v3.0.0
++```
++
++3. GitHub Actions faz build automaticamente
++
++### Assinatura Digital (Recomendado)
++
++```bash
++# 1. Coloque certificado em build/certificado.pfx
++# 2. Configure no .env:
++CSC_LINK=build/certificado.pfx
++CSC_KEY_PASSWORD=senha_certificado
++
++# 3. Build com assinatura
++npm run build:win
++```
++
++## 📊 Sistema de Afiliados
++
++### Convidar Afiliado (Admin)
++
++```javascript
++await window.bearAPI.affiliate.invite({
++  adminEmail: 'bearservice13@gmail.com',
++  novoEmail: 'afiliado@example.com',
++  cpf: '12345678900',
++  bankInfo: 'Banco: 001, Ag: 1234, Conta: 56789',
++  payout_freq: 'weekly' // ou 'biweekly'
++});
++```
++
++### Dashboard Afiliado
++
++```javascript
++const data = await window.bearAPI.affiliate.dashboard({
++  email: 'afiliado@example.com'
++});
++// Retorna: vendas, comissões, planos vendidos
++```
++
++### Pagamentos Semanais
++
++Rodado automaticamente toda segunda-feira às 10h ou manualmente:
++
++```javascript
++await window.bearAPI.affiliate.processPayments();
++```
++
++## 🎨 Perfis GPU
++
++### Aplicar Perfil
++
++```javascript
++// No renderer
++await window.bearAPI.gpu.applyProfile('nvidia', 'gaming');
++```
++
++### Exportar como .reg
++
++```javascript
++const result = await window.bearAPI.gpu.exportProfile('nvidia', 'gaming');
++// result.filepath = C:\Temp\nvidia_gaming_123456789.reg
++```
++
++## 📱 Suporte e Contato
++
++- **Email:** bearservice13@gmail.com
++- **Discord:** https://discord.gg/XmQMD6KG  
++- **PIX:** 54c2671d-d9da-422b-8ba8-cdd35a8af6e0
++- **Horário:** 9h-19h (Segunda a Sábado)
++
++## 🐛 Troubleshooting
++
++### Erro sqlite3
++
++```bash
++npm rebuild sqlite3 --runtime=electron --target=28.0.0
++```
++
++### SmartScreen bloqueia
++
++- Assinar digitalmente ou
++- "Mais informações" → "Executar mesmo assim"
++
++### Scripts não executam
++
++- Executar como administrador
++- Verificar antivírus
++
++## 📝 Checklist de Deploy
++
++- [ ] .env configurado
++- [ ] Ícone em build/icon.ico
++- [ ] Certificado (opcional)
++- [ ] electron-builder.json com owner/repo corretos
++- [ ] Teste em VM Windows 10/11
++- [ ] GitHub Release configurado
++- [ ] Auto-updater testado
++
++## 🎯 Roadmap
++
++- [ ] Integração Mercado Pago/Stripe real
++- [ ] Sistema de tickets
++- [ ] Analytics de uso
++- [ ] Dashboard web
++- [ ] Mobile app (companion)
++
++## 📄 Licença
++
++MIT License - Ver LICENSE.txt
++
++---
++
++**Desenvolvido com 🐻 por Bear Service**
++
++*Bear Optimizer Pro - Máxima Performance para Windows*
+
+diff --git a/docs/README_BUILD.md b/docs/README_BUILD.md
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/docs/README_BUILD.md
+@@ -0,0 +1,8 @@
++
++# README_BUILD
++
++Create repo: https://github.com/KenaiBrom/bear-optimizer-pro
++
++Add Secrets: SMTP_USER, SMTP_PASS, PIX_KEY, DISCORD_URL, CERT_PFX, CERT_PFX_PASS
++
++Tag to release: git tag v1.0.0 && git push origin main --tags
+
+diff --git a/.github/workflows/build-and-publish.yml b/.github/workflows/build-and-publish.yml
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/.github/workflows/build-and-publish.yml
+@@ -0,0 +1,26 @@
++
++name: Build & Release (Windows)
++on:
++  push:
++    tags: ['v*']
++  workflow_dispatch:
++jobs:
++  build:
++    runs-on: windows-latest
++    steps:
++      - uses: actions/checkout@v4
++      - name: Setup Node
++        uses: actions/setup-node@v4
++        with:
++          node-version: 20
++      - name: Install deps
++        run: npm ci
++      - name: Build Windows installer
++        run: npm run build:win
++      - name: Create Release
++        uses: softprops/action-gh-release@v1
++        with:
++          tag_name: ${{ github.ref_name }}
++          files: dist/*.exe
++        env:
++          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+diff --git a/build/icon.ico b/build/icon.ico
+new file mode 100644
+index 0000000..1111111
+--- /dev/null
++++ b/build/icon.ico
+@@ -0,0 +1,0 @@
+

@@ -1,0 +1,70 @@
+{
+  "name": "bear-optimizer-pro",
+  "version": "3.0.0",
+  "description": "Bear Optimizer Pro - Sistema de Otimização Windows",
+  "main": "electron/main.js",
+  "author": "Bear Optimizer",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7",
+    "qrcode": "^1.5.3",
+    "nodemailer": "^6.9.7",
+    "electron-log": "^5.0.1",
+    "electron-fetch": "^1.9.1",
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "electron-updater": "^6.1.7",
+    "cross-env": "^7.0.3"
+  },
+  "build": {
+    "appId": "com.bearoptimizer.pro",
+    "productName": "Bear Optimizer Pro",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "rpm"],
+      "icon": "build/icon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Bear Optimizer Pro"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "SEU_USUARIO",
+      "repo": "bear-optimizer-pro"
+    }
+  }
+}

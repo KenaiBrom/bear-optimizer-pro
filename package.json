@@ -1,0 +1,14 @@
+{
+  "name": "bear-optimizer-pro-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "bear-electron",
+    "bear-renderer",
+    "backend"
+  ],
+  "scripts": {
+    "start:backend": "cd backend && npm install && npm start",
+    "start:electron": "cd bear-electron && npm install && npm start"
+  }
+}

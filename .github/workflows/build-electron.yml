@@ -1,0 +1,49 @@
+
+name: Build & Release (Electron Windows)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install deps renderer
+        working-directory: ./bear-renderer
+        run: |
+          npm install
+          npm run build
+
+      - name: Install deps electron
+        working-directory: ./bear-electron
+        run: npm install
+
+      - name: Add NSIS
+        run: choco install nsis -y
+
+      - name: Build Electron
+        working-directory: ./bear-electron
+        run: npm run build:win
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: bear-electron/dist/*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

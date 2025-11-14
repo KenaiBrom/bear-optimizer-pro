@@ -1,0 +1,142 @@
+{
+  "name": "bear-optimizer-pro",
+  "version": "3.0.0",
+  "description": "Sistema Completo de Otimização Windows com Pagamento PIX e Afiliados",
+  "main": "electron/main.js",
+  "author": "Bear Service <bearservice13@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "dist": "electron-builder --win --publish never",
+    "publish": "electron-builder --win --publish always",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7",
+    "qrcode": "^1.5.3",
+    "nodemailer": "^6.9.7",
+    "uuid": "^9.0.1",
+    "electron-log": "^5.0.1",
+    "electron-updater": "^6.1.7",
+    "electron-store": "^8.1.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "cross-env": "^7.0.3"
+  },
+  "build": {
+    "appId": "com.bearoptimizer.pro",
+    "productName": "Bear Optimizer Pro",
+    "copyright": "© 2025 Bear Service",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "renderer/**/*",
+      "package.json",
+      "node_modules/**/*",
+      "!node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!node_modules/*.d.ts",
+      "!node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!.editorconfig",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "msi",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "requestedExecutionLevel": "requireAdministrator",
+      "publisherName": "Bear Service",
+      "verifyUpdateCodeSignature": false,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Bear Optimizer Pro",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "menuCategory": true,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "msi": {
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Bear Optimizer Pro",
+      "upgradeCode": "a7f3b1c5-9d2e-4f8a-b6c3-1e4d7a9f2c8b",
+      "artifactName": "${productName}-Installer-${version}.${ext}"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "build/icon.icns",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "rpm"],
+      "icon": "build/icon.png",
+      "category": "Utility",
+      "maintainer": "bearservice13@gmail.com"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "SEU_USUARIO",
+      "repo": "bear-optimizer-pro",
+      "releaseType": "release",
+      "publishAutoUpdate": true
+    },
+    "compression": "maximum",
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/sqlite3/**/*"
+    ]
+  },
+  "keywords": [
+    "optimizer",
+    "windows",
+    "performance",
+    "gaming",
+    "tweaks",
+    "fps",
+    "optimization"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SEU_USUARIO/bear-optimizer-pro.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SEU_USUARIO/bear-optimizer-pro/issues",
+    "email": "bearservice13@gmail.com"
+  },
+  "homepage": "https://github.com/SEU_USUARIO/bear-optimizer-pro#readme"
+}

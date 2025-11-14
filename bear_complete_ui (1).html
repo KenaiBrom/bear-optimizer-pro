@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐻 Bear Optimizer Pro</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-card: #16213e;
+      --accent: #e94560;
+      --accent-hover: #ff6b6b;
+      --text: #f5f5f5;
+      --text-muted: #a0aec0;
+      --success: #48bb78;
+      --warning: #ed8936;
+      --border: #2d3748;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f7fafc;
+      --bg-secondary: #edf2f7;
+      --bg-card: #ffffff;
+      --accent: #e94560;
+      --accent-hover: #d63447;
+      --text: #1a202c;
+      --text-muted: #718096;
+      --border: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 2px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .btn-icon {
+      padding: 0.6rem;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: scale(1.05);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: var(--border);
+    }
+
+    .main-container {
+      display: flex;
+      height: calc(100vh - 70px);
+    }
+
+    .sidebar {
+      width: 280px;
+      background: var(--bg-secondary);
+      border-right: 2px solid var(--border);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .menu-section {
+      margin-bottom: 2rem;
+    }
+
+    .menu-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .menu-item {
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.3rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .menu-item:hover {
+      background: var(--bg-card);
+      transform: translateX(5px);
+    }
+
+    .menu-item.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .menu-icon {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .info-panel {
+      width: 320px;
+      background: var(--bg-secondary);
+      border-left: 2px solid var(--border);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .info-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-description {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .info-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    .badge-new { background: var(--success); color: white; }
+    .badge-pro { background: var(--accent); color: white; }
+    .badge-beta { background: var(--warning); color: white; }
+
+    .function-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .function-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 2px solid var(--border);
+      transition: all 0.3s;
+    }
+
+    .function-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+    }
+
+    .function-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .function-icon {
+      font-size: 2rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      border-radius: 10px;
+    }
+
+    .function-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .function-description {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .gpu-panel {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .gpu-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .gpu-tab {
+      padding: 0.8rem 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 600;
+    }
+
+    .gpu-tab.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .gpu-profiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .profile-card {
+      background: var(--bg-secondary);
+      padding: 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-card:hover {
+      background: var(--border);
+      transform: scale(1.02);
+    }
+
+    .profile-name {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .profile-settings {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: var(--border);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .toggle-switch.active {
+      background: var(--success);
+    }
+
+    .toggle-slider {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .toggle-switch.active .toggle-slider {
+      transform: translateX(24px);
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    @media (max-width: 1024px) {
+      .info-panel { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 200px; }
+      .content { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <span>🐻</span>
+      <span>Bear Optimizer Pro</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-icon btn-secondary" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <button class="btn btn-primary" onclick="openDiscord()">💬 Discord</button>
+      <button class="btn btn-secondary" onclick="logout()">Sair</button>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="sidebar">
+      <div class="menu-section">
+        <div class="menu-title">Principal</div>
+        <div class="menu-item active" onclick="showSection('dashboard')">
+          <span class="menu-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+        <div class="menu-item" onclick="showSection('optimizer')">
+          <span class="menu-icon">⚡</span>
+          <span>Otimizador</span>
+        </div>
+        <div class="menu-item" onclick="showSection('gpu')">
+          <span class="menu-icon">🎮</span>
+          <span>GPU Profiles</span>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-title">Sistema</div>
+        <div class="menu-item" onclick="showSection('cleanup')">
+          <span class="menu-icon">🧹</span>
+          <span>Limpeza</span>
+        </div>
+        <div class="menu-item" onclick="showSection('tweaks')">
+          <span class="menu-icon">🔧</span>
+          <span>Tweaks</span>
+        </div>
+        <div class="menu-item" onclick="showSection('monitor')">
+          <span class="menu-icon">📈</span>
+          <span>Monitor</span>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-title">Gaming</div>
+        <div class="menu-item" onclick="showSection('fps')">
+          <span class="menu-icon">🎯</span>
+          <span>FPS Boost</span>
+        </div>
+        <div class="menu-item" onclick="showSection('latency')">
+          <span class="menu-icon">⚡</span>
+          <span>Low Latency</span>
+        </div>
+        <div class="menu-item" onclick="showSection('mouse')">
+          <span class="menu-icon">🖱️</span>
+          <span>Mouse/DPI</span>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-title">Avançado</div>
+        <div class="menu-item" onclick="showSection('network')">
+          <span class="menu-icon">🌐</span>
+          <span>Rede</span>
+        </div>
+        <div class="menu-item" onclick="showSection('registry')">
+          <span class="menu-icon">📝</span>
+          <span>Registro</span>
+        </div>
+        <div class="menu-item" onclick="showSection('services')">
+          <span class="menu-icon">⚙️</span>
+          <span>Serviços</span>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="menu-title">Conta</div>
+        <div class="menu-item" onclick="showSection('plans')">
+          <span class="menu-icon">💳</span>
+          <span>Planos</span>
+        </div>
+        <div class="menu-item" onclick="showSection('license')">
+          <span class="menu-icon">🔑</span>
+          <span>Licença</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content" id="mainContent">
+      <h2>📊 Dashboard</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">87%</div>
+          <div class="stat-label">Performance Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">142 FPS</div>
+          <div class="stat-label">FPS Médio</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">12ms</div>
+          <div class="stat-label">Latência</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">8.2GB</div>
+          <div class="stat-label">RAM Liberada</div>
+        </div>
+      </div>
+
+      <div class="function-grid">
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">🔍</div>
+            <div class="function-title">Diagnóstico</div>
+          </div>
+          <div class="function-description">
+            Analisa CPU, RAM, GPU, disco e rede. Identifica gargalos e problemas de performance
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="runDiagnostic()">Executar</button>
+        </div>
+
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">⚡</div>
+            <div class="function-title">Auto-Optimize</div>
+          </div>
+          <div class="function-description">
+            Aplica automaticamente as melhores configurações baseado no seu hardware
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="autoOptimize()">Otimizar</button>
+        </div>
+
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">🧹</div>
+            <div class="function-title">Deep Clean</div>
+          </div>
+          <div class="function-description">
+            Remove temporários, cache, prefetch e libera espaço em disco
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="deepClean()">Limpar</button>
+        </div>
+
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">🎮</div>
+            <div class="function-title">GPU Turbo</div>
+          </div>
+          <div class="function-description">
+            Overclock seguro e perfis otimizados para NVIDIA e AMD
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="showSection('gpu')">Configurar</button>
+        </div>
+
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">💾</div>
+            <div class="function-title">RAM Boost</div>
+          </div>
+          <div class="function-description">
+            Libera memória RAM e otimiza processos em segundo plano
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="ramBoost()">Liberar</button>
+        </div>
+
+        <div class="function-card">
+          <div class="function-header">
+            <div class="function-icon">🌐</div>
+            <div class="function-title">Net Boost</div>
+          </div>
+          <div class="function-description">
+            Reduz ping, otimiza TCP/IP e melhora conexão para jogos
+          </div>
+          <button class="btn btn-primary" style="width: 100%;" onclick="netBoost()">Otimizar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-panel">
+      <div class="info-card">
+        <div class="info-title">
+          <span>🔍</span>
+          <span>Diagnóstico</span>
+        </div>
+        <div class="info-description">
+          Verifica 6 métricas: CPU, RAM, GPU, Disco, FPS e Latência. Gera relatório completo com problemas detectados e soluções sugeridas.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>⚡</span>
+          <span>Auto-Optimize</span>
+        </div>
+        <div class="info-description">
+          Ajusta prioridades, desativa serviços desnecessários, otimiza energia e aplica tweaks de registro automaticamente.
+        </div>
+        <span class="info-badge badge-pro">PRO</span>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>🎮</span>
+          <span>GPU Profiles</span>
+        </div>
+        <div class="info-description">
+          <strong>NVIDIA:</strong> Gaming (máximo FPS), Streaming, Trabalho<br>
+          <strong>AMD:</strong> Gaming (anti-lag), Eficiência, Balanceado<br>
+          Perfis prontos com overclock seguro.
+        </div>
+        <span class="info-badge badge-pro">PRO</span>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>🧹</span>
+          <span>Deep Clean</span>
+        </div>
+        <div class="info-description">
+          Remove: arquivos temp, cache DNS/navegador, prefetch, logs antigos, lixeira. Modo seguro garante integridade do sistema.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>💾</span>
+          <span>RAM Boost</span>
+        </div>
+        <div class="info-description">
+          Fecha processos desnecessários, limpa cache de sistema, otimiza paginação e libera até 30-40% da RAM.
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>🌐</span>
+          <span>Net Boost</span>
+        </div>
+        <div class="info-description">
+          Otimiza: MTU, TCP window, buffer size, QoS. Flush DNS, libera portas. Reduz ping em 10-30ms em média.
+        </div>
+        <span class="info-badge badge-beta">BETA</span>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">
+          <span>📞</span>
+          <span>Suporte</span>
+        </div>
+        <div class="info-description">
+          Email: bearservice13@gmail.com<br>
+          Discord: discord.gg/XmQMD6KG<br>
+          Horário: 9h-19h (Seg-Sáb)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal PIX -->
+  <div id="pixModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: var(--bg-card); padding: 2rem; border-radius: 20px; max-width: 500px; text-align: center;">
+      <h2 style="margin-bottom: 1rem;">💳 Pagamento PIX</h2>
+      <div id="planInfo" style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;"></div>
+      <img id="pixQR" style="max-width: 300px; margin: 1rem 0; border-radius: 8px;" />
+      <textarea id="pixCode" readonly style="width: 100%; height: 80px; margin: 1rem 0; padding: 0.8rem; background: var(--bg-secondary); border: 2px solid var(--border); border-radius: 8px; color: var(--text); font-family: monospace;"></textarea>
+      <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+        <button class="btn btn-primary" style="flex: 1;" onclick="copyPixCode()">📋 Copiar Código</button>
+        <button class="btn btn-secondary" style="flex: 1;" onclick="closePixModal()">✖️ Fechar</button>
+      </div>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">Após pagamento, aguarde confirmação por email</p>
+    </div>
+  </div>
+
+  <script>
+    let currentPlan = null;
+    
+    function showSection(section) {
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.target.closest('.menu-item').classList.add('active');
+      
+      const content = document.getElementById('mainContent');
+      
+      if (section === 'plans') {
+        content.innerHTML = `
+          <h2>💳 Planos e Assinaturas</h2>
+          
+          <div class="function-grid">
+            <div class="function-card" style="border-color: #3498db;">
+              <div class="function-header">
+                <div class="function-icon" style="background: #3498db;">🔷</div>
+                <div class="function-title">Start</div>
+              </div>
+              <div class="stat-value" style="color: #3498db;">R$ 59,90</div>
+              <div class="stat-label">por mês</div>
+              <div class="function-description" style="margin-top: 1rem;">
+                • Diagnóstico Completo<br>
+                • Limpeza Básica<br>
+                • Monitor em Tempo Real<br>
+                • Scripts Essenciais<br>
+                • Suporte Email
+              </div>
+              <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="selectPlan('start')">Assinar Start</button>
+            </div>
+
+            <div class="function-card" style="border-color: #9b59b6;">
+              <div class="function-header">
+                <div class="function-icon" style="background: #9b59b6;">🟣</div>
+                <div class="function-title">Gamer</div>
+              </div>
+              <div class="stat-value" style="color: #9b59b6;">R$ 79,90</div>
+              <div class="stat-label">por mês</div>
+              <div class="function-description" style="margin-top: 1rem;">
+                • 60% dos Scripts<br>
+                • Tudo do Start +<br>
+                • DPI Config Mouse/Teclado<br>
+                • Painéis NVIDIA/AMD<br>
+                • Otimização Gaming<br>
+                • Suporte Prioritário
+              </div>
+              <button class="btn btn-primary" style="width: 100%; margin-top: 1rem; background: #9b59b6;" onclick="selectPlan('gamer')">Assinar Gamer</button>
+            </div>
+
+            <div class="function-card" style="border-color: #f39c12;">
+              <div class="function-header">
+                <div class="function-icon" style="background: #f39c12;">🏆</div>
+                <div class="function-title">Pro Gamer</div>
+              </div>
+              <div class="stat-value" style="color: #f39c12;">R$ 99,90</div>
+              <div class="stat-label">por mês</div>
+              <div class="function-description" style="margin-top: 1rem;">
+                • 100% dos Scripts<br>
+                • Tudo do Gamer +<br>
+                • Scripts Personalizados<br>
+                • Benchmark Avançado<br>
+                • Bottleneck Analysis<br>
+                • Suporte VIP 24/7
+              </div>
+              <button class="btn btn-primary" style="width: 100%; margin-top: 1rem; background: #f39c12;" onclick="selectPlan('pro')">Assinar Pro</button>
+            </div>
+          </div>
+        `;
+      } else if (section === 'gpu') {
+        content.innerHTML = `
+          <h2>🎮 GPU Profiles</h2>
+          
+          <div class="gpu-panel">
+            <div class="gpu-tabs">
+              <div class="gpu-tab active" onclick="showGpuTab('nvidia')">🟢 NVIDIA</div>
+              <div class="gpu-tab" onclick="showGpuTab('amd')">🔴 AMD</div>
+            </div>
+            
+            <div id="nvidia-panel">
+              <h3 style="margin-bottom: 1rem;">Perfis NVIDIA</h3>
+              <div class="gpu-profiles">
+                <div class="profile-card" onclick="applyProfile('nvidia', 'gaming')">
+                  <div class="profile-name">🎯 Gaming - Máximo FPS</div>
+                  <div class="profile-settings">
+                    • Power Mode: Max Performance<br>
+                    • Low Latency: Ultra<br>
+                    • VSync: Off<br>
+                    • DLSS: Quality
+                  </div>
+                </div>
+                
+                <div class="profile-card" onclick="applyProfile('nvidia', 'streaming')">
+                  <div class="profile-name">📺 Streaming</div>
+                  <div class="profile-settings">
+                    • NVENC Otimizado<br>
+                    • Power Mode: Optimal<br>
+                    • Frame Limiter: 144<br>
+                    • CUDA: Enabled
+                  </div>
+                </div>
+                
+                <div class="profile-card" onclick="applyProfile('nvidia', 'work')">
+                  <div class="profile-name">💼 Trabalho</div>
+                  <div class="profile-settings">
+                    • Power Mode: Adaptive<br>
+                    • VSync: On<br>
+                    • Multi-Display: On<br>
+                    • GPU Boost: Off
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="amd-panel" style="display: none;">
+              <h3 style="margin-bottom: 1rem;">Perfis AMD</h3>
+              <div class="gpu-profiles">
+                <div class="profile-card" onclick="applyProfile('amd', 'gaming')">
+                  <div class="profile-name">🎯 Gaming - Máximo FPS</div>
+                  <div class="profile-settings">
+                    • Anti-Lag: On<br>
+                    • Boost: On<br>
+                    • Chill: Off<br>
+                    • FreeSync: On
+                  </div>
+                </div>
+                
+                <div class="profile-card" onclick="applyProfile('amd', 'balanced')">
+                  <div class="profile-name">⚖️ Balanceado</div>
+                  <div class="profile-settings">
+                    • Anti-Lag: Auto<br>
+                    • Chill: On<br>
+                    • Power Saver: On<br>
+                    • Frame Target: 75
+                  </div>
+                </div>
+                
+                <div class="profile-card" onclick="applyProfile('amd', 'efficiency')">
+                  <div class="profile-name">💡 Eficiência</div>
+                  <div class="profile-settings">
+                    • Chill: On<br>
+                    • Boost: Off<br>
+                    • Power Limit: 80%<br>
+                    • Quiet Mode: On
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const sectionTitles = {
+          dashboard: '📊 Dashboard',
+          optimizer: '⚡ Otimizador',
+          cleanup: '🧹 Limpeza',
+          tweaks: '🔧 Tweaks',
+          monitor: '📈 Monitor',
+          fps: '🎯 FPS Boost',
+          latency: '⚡ Low Latency',
+          mouse: '🖱️ Mouse/DPI',
+          network: '🌐 Rede',
+          registry: '📝 Registro',
+          services: '⚙️ Serviços',
+          plans: '💳 Planos',
+          license: '🔑 Licença'
+        };
+        
+        content.innerHTML = `
+          <h2>${sectionTitles[section]}</h2>
+          <p style="color: var(--text-muted); margin-top: 1rem;">Seção em desenvolvimento...</p>
+        `;
+      }
+    }
+
+    function selectPlan(plan) {
+      currentPlan = plan;
+      const plans = {
+        start: { name: 'Start', price: 59.90, icon: '🔷' },
+        gamer: { name: 'Gamer', price: 79.90, icon: '🟣' },
+        pro: { name: 'Pro Gamer', price: 99.90, icon: '🏆' }
+      };
+      
+      const selected = plans[plan];
+      document.getElementById('planInfo').innerHTML = `
+        <div style="font-size: 1.2rem; font-weight: bold;">${selected.icon} ${selected.name}</div>
+        <div style="font-size: 1.8rem; color: var(--accent); margin-top: 0.5rem;">R$ ${selected.price.toFixed(2)}</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.3rem;">Válido por 30 dias</div>
+      `;
+      
+      // Gerar QR Code PIX (simulação)
+      document.getElementById('pixQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=PIX_${plan}_${selected.price}`;
+      document.getElementById('pixCode').value = '00020126580014BR.GOV.BCB.PIX013654c2671d-d9da-422b-8ba8-cdd35a8af6e05204000053039865802BR5913Bear Optimizer6009Brasilia6304';
+      
+      document.getElementById('pixModal').style.display = 'flex';
+    }
+    
+    function copyPixCode() {
+      const code = document.getElementById('pixCode');
+      code.select();
+      document.execCommand('copy');
+      alert('✅ Código PIX copiado para área de transferência!');
+    }
+    
+    function closePixModal() {
+      document.getElementById('pixModal').style.display = 'none';
+    }
+
+    function showGpuTab(brand) {
+      document.querySelectorAll('.gpu-tab').forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      document.getElementById('nvidia-panel').style.display = brand === 'nvidia' ? 'block' : 'none';
+      document.getElementById('amd-panel').style.display = brand === 'amd' ? 'block' : 'none';
+    }
+
+    function applyProfile(brand, profile) {
+      if (confirm(`Aplicar perfil ${profile} (${brand.toUpperCase()})?`)) {
+        alert('✅ Perfil aplicado com sucesso!');
+      }
+    }
+
+    function runDiagnostic() {
+      alert('🔍 Executando diagnóstico completo...');
+    }
+
+    function autoOptimize() {
+      alert('⚡ Aplicando otimizações automáticas...');
+    }
+
+    function deepClean() {
+      alert('🧹 Iniciando limpeza profunda...');
+    }
+
+    function ramBoost() {
+      alert('💾 Liberando memória RAM...');
+    }
+
+    function netBoost() {
+      alert('🌐 Otimizando conexão de rede...');
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      document.getElementById('themeBtn').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+    }
+
+    function openDiscord() {
+      window.open('https://discord.gg/XmQMD6KG', '_blank');
+    }
+
+    function logout() {
+      if (confirm('Deseja sair?')) {
+        alert('Logout realizado!');
+      }
+    }
+  </script>
+</body>
+</html>
